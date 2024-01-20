@@ -1,0 +1,41 @@
+tic tac toe
+CUI
+
+Components:
+	1. Board
+	2. Win condition
+	3. Player O and Player X
+	4. Turn of each player
+
+class Board:
+	
+	Attributes:
+		
+		State:
+			current game position
+			default: [ [' '] * 3 ] * 3
+		
+		Size:
+			size of the current game board
+			default: 3
+		
+		Player:
+			whose current turn it is
+			default: 1/O
+	
+	Methods:
+	
+		Display:
+			()
+			print the current game position, aling with coordinates
+			return type: None
+		
+		Step/Turn:
+			(player, row, col)
+			update State based on Player 's choice
+			return type: None
+		
+		Win:
+			()
+			check whether the current Player has won
+			return type: boolean
