@@ -75,14 +75,20 @@ Methods:
         '''
         Lists cases of possibile victories and checks whether the win condition has been satisfied.
         '''
-        from copy import deepcopy        
+
+        # assembles rows without disturbing self.state
+        from copy import deepcopy
         win_cases = deepcopy(self.state)
+
+        # assembles the columns
         for i in range(self.size):
             win_cases.append([ self.state[j][i] for j in range(self.size) ])
-
-        win_cases.append([ self.state[i][i] for i in range(self.size) ])
-        win_cases.append([ self.state[i][-i] for i in range(self.size) ])
         
+        # assembles the main- and anti- diagonals respectively
+        win_cases.append([ self.state[i][i] for i in range(self.size) ])
+        win_cases.append([ self.state[i][-i-1] for i in range(self.size) ])
+
+        # returns True when a case in win_cases is of the type ['X','X','X'] or ['O','O','O'], else False
         from functools import reduce
         for case in win_cases:
             if reduce( lambda a, b: a if a == b else 'False' , case ) in 'XO':
@@ -120,14 +126,13 @@ def gameloop(n : int = 3):
         try:
             row = int(input('Enter row number where to mark    : ')) - 1
             col = int(input('Enter column number where to mark : ')) - 1
-            assert (row in range(game.size)) and (col in range(game.size))
-            #redundant statement, may be optimized in the future
+            valid_square = game.turn(row,col)
 
         except:
             print('Please enter a valid row/column number.')
 
         else:
-            if game.turn(row,col):
+            if valid_square:
                 if game.win():
                     print('Player {} has won! Congratulations!\n'.format(game.player_to_symb[game.player]))
                     break
@@ -139,7 +144,7 @@ def gameloop(n : int = 3):
             
             else:
                 print('Cell is already filled! Try again. (Nice Try)')
-    del game    
+    del game, valid_square
 
 def main():
 
